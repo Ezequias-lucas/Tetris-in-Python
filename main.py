@@ -39,7 +39,7 @@ def pontos(tabuleiro):
     return(0)
 
 
-def desenhar_peca (Pe,x_peca,y_peca):
+def desenhar_peca(Pe,x_peca,y_peca):
 
     for linha_da_peca in range(len(Pe)):
         for coluna_da_peca in range(len(Pe[linha_da_peca])):
@@ -50,7 +50,7 @@ def desenhar_peca (Pe,x_peca,y_peca):
                 
                 tabuleiro[linha][coluna] = 1
 
-def colisao (Pe,x_peca,y_peca):
+def colisao(Pe,x_peca,y_peca):
 
     for linha_da_peca in range(len(Pe)):
         for coluna_da_peca in range(len(Pe[linha_da_peca])):
@@ -65,7 +65,7 @@ def colisao (Pe,x_peca,y_peca):
 
     return(True)
 
-def decisao (y_peca):
+def decisao(y_peca):
     
     if pode_descer == True:
 
@@ -77,7 +77,7 @@ def decisao (y_peca):
 
         return(y_peca)
 
-def fixar (tabuleiro):
+def fixar(tabuleiro):
 
     for i in range(len(tabuleiro)):
 
@@ -92,12 +92,12 @@ def randomiza_pecas(pecas):
     return(Pe)
 
 #Movimento
-def girarPe (Pe):
+def girarPe(Pe):
 
     Pe = numpy.rot90(Pe)
     return(Pe)
 
-def mexer_peca_esquerda (Pe,x_peca,y_peca):
+def mexer_peca_esquerda(Pe,x_peca,y_peca):
 
     for linha_da_peca in range(len(Pe)):
             for coluna_da_peca in range(len(Pe[linha_da_peca])):
@@ -112,7 +112,7 @@ def mexer_peca_esquerda (Pe,x_peca,y_peca):
 
     return(-1)
 
-def mexer_peca_direita (Pe,x_peca,y_peca):
+def mexer_peca_direita(Pe,x_peca,y_peca):
 
     for linha_da_peca in range(len(Pe)):
             for coluna_da_peca in range(len(Pe[linha_da_peca])):
@@ -127,7 +127,7 @@ def mexer_peca_direita (Pe,x_peca,y_peca):
 
     return(+1)
 
-def mexer_peca_baixo (Pe,x_peca,y_peca):
+def mexer_peca_baixo(Pe,x_peca,y_peca):
 
     for linha_da_peca in range(len(Pe)):
             for coluna_da_peca in range(len(Pe[linha_da_peca])):
