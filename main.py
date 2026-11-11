@@ -208,7 +208,7 @@ def mexer_peca_direita(Pe,x_peca,y_peca):
 
 #while do jogo
 
-while rodando:
+while loop_jogo:
 
     os.system("cls")
 
@@ -216,7 +216,7 @@ while rodando:
 
     if keyboard.is_pressed('r'):
 
-        Pe = girarPe (Pe)
+        Pe = girar_peca_escolhida(Pe)
 
     if keyboard.is_pressed('left'):
         
@@ -258,7 +258,7 @@ while rodando:
 
     print(pontostotais)
 
-    rodando(tabuleiro)
+    loop_jogo = rodando(tabuleiro)
 
     time.sleep(0.4)
 
