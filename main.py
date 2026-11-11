@@ -90,39 +90,18 @@ def limpa_tabuleiro(tabuleiro):
 
     for linha in range(len(tabuleiro)):
         for coluna in range(len(tabuleiro[linha])):
-
             if tabuleiro[linha][coluna] == VAZIO \
                 or tabuleiro[linha][coluna] == PECA_MOVEL:
-
                 tabuleiro[linha][coluna] = VAZIO
-
-def pontos(tabuleiro):
-
-    for i in range(len(tabuleiro)):
-        for j in range(len(tabuleiro[i])):
-
-            if tabuleiro[i][j] == PECA_FIXA:
-                if sum(tabuleiro[i]) == 42:
-
-                    pont = 1
-
-                    tabuleiro[i] = [0] *len(tabuleiro[i])
-                    tabuleiro[i][0] = PAREDE
-                    tabuleiro[i][10] = PAREDE
-
-                    return(pont)
-    return(0)
-
 
 def desenhar_peca(Pe,x_peca,y_peca):
 
     for linha_da_peca in range(len(Pe)):
         for coluna_da_peca in range(len(Pe[linha_da_peca])):
             if Pe[linha_da_peca][coluna_da_peca] == PECA_MOVEL:
-
                 coluna = coluna_da_peca + x_peca
                 linha = linha_da_peca + y_peca
-                
+
                 tabuleiro[linha][coluna] = PECA_MOVEL
 
 #Verifica se a colisao no movimento seguinte
@@ -132,12 +111,11 @@ def colisao(Pe,x_peca,y_peca):
     for linha_da_peca in range(len(Pe)):
         for coluna_da_peca in range(len(Pe[linha_da_peca])):
             if Pe[linha_da_peca][coluna_da_peca] == PECA_MOVEL:
-                
                 coluna = coluna_da_peca + x_peca
                 linha = linha_da_peca + y_peca
 
-                if tabuleiro[linha+1][coluna] == CHAO or tabuleiro[linha+1][coluna] == PECA_FIXA:
-                    
+                if tabuleiro[linha+1][coluna] == CHAO \
+                    or tabuleiro[linha+1][coluna] == PECA_FIXA:
                     return(False)
 
     return(True)
@@ -147,22 +125,36 @@ def colisao(Pe,x_peca,y_peca):
 def gravidade(y_peca):
     
     if pode_descer == True:
-
         y_peca+=1
-
         return(y_peca)
-    
     else:
-
         return(y_peca)
+
+def descer_peca(tabuleiro, linha_limpa):
+
+    for i in range(linha_limpa, 0, -1):
+        for j in range (1, 10):
+            tabuleiro[i][j] = tabuleiro[i-1][j]
+
+def pontos(tabuleiro):
+
+    for i in range(len(tabuleiro)):
+        if sum(tabuleiro[i][1:10]) == 9* PECA_FIXA:
+            for j in range(1, 10):
+                tabuleiro[i][j] = VAZIO
+                
+                descer_peca(tabuleiro,i)
+
+                return(1)
+
+    return(0)
+
 
 def fixar(tabuleiro):
 
     for i in range(len(tabuleiro)):
         for j in range(len(tabuleiro[i])):
-
             if tabuleiro[i][j] == PECA_MOVEL: 
-
                 tabuleiro[i][j] = PECA_FIXA
 
 #Movimento
@@ -177,13 +169,12 @@ def mexer_peca_esquerda(Pe,x_peca,y_peca):
     for linha_da_peca in range(len(Pe)):
         for coluna_da_peca in range(len(Pe[linha_da_peca])):
             if Pe[linha_da_peca][coluna_da_peca] == PECA_MOVEL:
-
                 coluna = coluna_da_peca + x_peca
                 linha = linha_da_peca + y_peca
 
-                if tabuleiro[linha-1][coluna-1] == CHAO \
-                    or tabuleiro[linha-1][coluna-1] == PAREDE \
-                        or tabuleiro[linha-1][coluna-1] == PECA_FIXA:
+                if tabuleiro[linha][coluna-1] == CHAO \
+                    or tabuleiro[linha][coluna-1] == PAREDE \
+                        or tabuleiro[linha][coluna-1] == PECA_FIXA:
                 
                     return(+0)
 
@@ -194,13 +185,12 @@ def mexer_peca_direita(Pe,x_peca,y_peca):
     for linha_da_peca in range(len(Pe)):
         for coluna_da_peca in range(len(Pe[linha_da_peca])):
             if Pe[linha_da_peca][coluna_da_peca] == PECA_MOVEL:
-
                 coluna = coluna_da_peca + x_peca
                 linha = linha_da_peca + y_peca
 
-                if tabuleiro[linha+1][coluna+1] == CHAO \
-                    or tabuleiro[linha+1][coluna+1] == PAREDE \
-                        or tabuleiro[linha+1][coluna+1] == PECA_FIXA:
+                if tabuleiro[linha][coluna+1] == CHAO \
+                    or tabuleiro[linha][coluna+1] == PAREDE \
+                        or tabuleiro[linha][coluna+1] == PECA_FIXA:
                     
                     return(+0)
 
