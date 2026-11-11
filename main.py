@@ -4,6 +4,58 @@ import time
 import keyboard
 import numpy 
 
+tabuleiro = [[0 for coluna in range(11)]for linha in range(21)] 
+
+for linha in range(len(tabuleiro)):
+
+    tabuleiro[linha][0] = 3
+    tabuleiro[linha][10] = 3
+
+    for coluna in range (len(tabuleiro[linha])):
+        if tabuleiro[20][coluna] == 0:
+            tabuleiro[20][coluna] = 2
+
+#peças
+
+peca_0 =[
+    [1,1],
+    [1,1]
+]
+
+peca_1 =[
+    [1,1,1,1],
+    [0,0,0,0],
+    [0,0,0,0],
+    [0,0,0,0],
+]
+
+peca_2 =[
+    [1,1,1],
+    [0,1,0],
+    [0,0,0]
+]
+
+pecas = [peca_0, peca_1, peca_2]
+
+Pe = randomiza_pecas(pecas)
+
+#posição inicial da peça no tabuleiro
+
+x_peca = 4
+
+y_peca = 0
+
+X = 4
+
+Y = 0
+
+pontostotais = 0
+
+pode_descer = True
+
+rodando = True
+
+
 def imprime_tabuleiro(tabuleiro):
     for linha in range(len(tabuleiro)):
         for coluna in range(len(tabuleiro[linha])):
@@ -141,59 +193,6 @@ def mexer_peca_baixo(Pe,x_peca,y_peca):
                         return(+0)
 
     return(+1)
-
-#transforma as extremidades do tabuleiro em 2
-
-tabuleiro = [[0 for coluna in range(11)]for linha in range(21)]
-
-for linha in range(len(tabuleiro)):
-
-    tabuleiro[linha][0] = 3
-    tabuleiro[linha][10] = 3
-
-    for coluna in range (len(tabuleiro[linha])):
-        if tabuleiro[20][coluna] == 0:
-            tabuleiro[20][coluna] = 2
-
-#peças
-
-peca_0 =[
-    [1,1],
-    [1,1]
-]
-
-peca_1 =[
-    [1,1,1,1],
-    [0,0,0,0],
-    [0,0,0,0],
-    [0,0,0,0],
-]
-
-peca_2 =[
-    [1,1,1],
-    [0,1,0],
-    [0,0,0]
-]
-
-pecas = [peca_0, peca_1, peca_2]
-
-Pe = randomiza_pecas(pecas)
-
-#posição inicial da peça no tabuleiro
-
-x_peca = 4
-
-y_peca = 0
-
-X = 4
-
-Y = 0
-
-pontostotais = 0
-
-pode_descer = True
-
-rodando = True
 
 #while do jogo
 
