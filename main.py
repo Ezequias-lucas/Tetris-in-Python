@@ -83,12 +83,17 @@ def imprime_tabuleiro(tabuleiro):
             else:
                 print("  ", end="")
         print()
-    
+
+#Limpa o Tabuleiro Mantendo as posiçoes das pecas ja fixada
+
 def limpa_tabuleiro(tabuleiro):
 
     for linha in range(len(tabuleiro)):
         for coluna in range(len(tabuleiro[linha])):
-            if tabuleiro[linha][coluna] == VAZIO or tabuleiro[linha][coluna] == PECA_MOVEL:
+
+            if tabuleiro[linha][coluna] == VAZIO \
+                or tabuleiro[linha][coluna] == PECA_MOVEL:
+
                 tabuleiro[linha][coluna] = VAZIO
 
 def pontos(tabuleiro):
@@ -120,6 +125,8 @@ def desenhar_peca(Pe,x_peca,y_peca):
                 
                 tabuleiro[linha][coluna] = PECA_MOVEL
 
+#Verifica se a colisao no movimento seguinte
+
 def colisao(Pe,x_peca,y_peca):
 
     for linha_da_peca in range(len(Pe)):
@@ -135,7 +142,9 @@ def colisao(Pe,x_peca,y_peca):
 
     return(True)
 
-def decisao(y_peca):
+#Mantem o movimento de queda da peca
+
+def gravidade(y_peca):
     
     if pode_descer == True:
 
@@ -156,12 +165,9 @@ def fixar(tabuleiro):
 
                 tabuleiro[i][j] = PECA_FIXA
 
-def randomiza_pecas(pecas):
-    Pe = random.choice(pecas)
-    return(Pe)
-
 #Movimento
-def girarPe(Pe):
+
+def girar_peca_escolhida(Pe):
 
     Pe = numpy.rot90(Pe)
     return(Pe)
@@ -200,22 +206,6 @@ def mexer_peca_direita(Pe,x_peca,y_peca):
 
     return(+1)
 
-def mexer_peca_baixo(Pe,x_peca,y_peca):
-
-    for linha_da_peca in range(len(Pe)):
-        for coluna_da_peca in range(len(Pe[linha_da_peca])):
-            if Pe[linha_da_peca][coluna_da_peca] == PECA_MOVEL:
-
-                coluna = coluna_da_peca + x_peca
-                linha = linha_da_peca + y_peca
-
-                if tabuleiro[linha+1][coluna] == CHAO \
-                    or tabuleiro[linha+1][coluna] == PECA_FIXA:
-                
-                    return(+0)
-
-    return(+1)
-
 #while do jogo
 
 while rodando:
@@ -240,12 +230,6 @@ while rodando:
 
         X +=mexer_peca_direita(Pe,x_peca,y_peca)
 
-    if keyboard.is_pressed('down'):
-
-        y_peca += mexer_peca_baixo(Pe,x_peca,y_peca)
-
-        Y +=mexer_peca_baixo(Pe,x_peca,y_peca)
-
     limpa_tabuleiro(tabuleiro)
 
     pode_descer = colisao (Pe,x_peca,y_peca)
@@ -266,7 +250,7 @@ while rodando:
 
     if pode_descer == True:
 
-        y_peca = decisao (y_peca)
+        y_peca = gravidade (y_peca)
 
         desenhar_peca(Pe,x_peca,y_peca)
 
