@@ -4,16 +4,24 @@ import time
 import keyboard
 import numpy 
 
-tabuleiro = [[0 for coluna in range(11)]for linha in range(21)] 
+#CONSTANTES DE ORGANIZAÇÂO E LEGIBILIDADE
+
+VAZIO = 0
+PECA_MOVEL = 1
+CHAO = 2
+PAREDE = 3
+PECA_FIXA = 4
+
+tabuleiro = [[VAZIO for coluna in range(11)]for linha in range(21)] 
 
 for linha in range(len(tabuleiro)):
 
-    tabuleiro[linha][0] = 3
-    tabuleiro[linha][10] = 3
+    tabuleiro[linha][0] = PAREDE
+    tabuleiro[linha][10] = PAREDE
 
     for coluna in range (len(tabuleiro[linha])):
-        if tabuleiro[20][coluna] == 0:
-            tabuleiro[20][coluna] = 2
+        if tabuleiro[20][coluna] == VAZIO:
+            tabuleiro[20][coluna] = CHAO
 
 #peças
 
@@ -37,6 +45,10 @@ peca_2 =[
 
 pecas = [peca_0, peca_1, peca_2]
 
+def randomiza_pecas(pecas):
+    Pe = random.choice(pecas)
+    return(Pe)
+
 Pe = randomiza_pecas(pecas)
 
 #posição inicial da peça no tabuleiro
@@ -53,13 +65,20 @@ pontostotais = 0
 
 pode_descer = True
 
-rodando = True
 
+def rodando(tabuleiro):
+
+    if tabuleiro[0][4] == PECA_FIXA:
+        return(False)
+    else:
+        return(True)
+
+loop_jogo = rodando(tabuleiro)
 
 def imprime_tabuleiro(tabuleiro):
     for linha in range(len(tabuleiro)):
         for coluna in range(len(tabuleiro[linha])):
-            if tabuleiro[linha][coluna] !=0:
+            if tabuleiro[linha][coluna] != VAZIO:
                 print("██" ,end="")
             else:
                 print("  ", end="")
@@ -69,23 +88,22 @@ def limpa_tabuleiro(tabuleiro):
 
     for linha in range(len(tabuleiro)):
         for coluna in range(len(tabuleiro[linha])):
-            if tabuleiro[linha][coluna] == 0 or tabuleiro[linha][coluna] == 1:
-                tabuleiro[linha][coluna] = 0
+            if tabuleiro[linha][coluna] == VAZIO or tabuleiro[linha][coluna] == PECA_MOVEL:
+                tabuleiro[linha][coluna] = VAZIO
 
 def pontos(tabuleiro):
 
     for i in range(len(tabuleiro)):
         for j in range(len(tabuleiro[i])):
 
-            if tabuleiro[i][j] == 4:
-
+            if tabuleiro[i][j] == PECA_FIXA:
                 if sum(tabuleiro[i]) == 42:
 
                     pont = 1
 
                     tabuleiro[i] = [0] *len(tabuleiro[i])
-                    tabuleiro[i][0] = 3
-                    tabuleiro[i][10] = 3 
+                    tabuleiro[i][0] = PAREDE
+                    tabuleiro[i][10] = PAREDE
 
                     return(pont)
     return(0)
@@ -95,23 +113,23 @@ def desenhar_peca(Pe,x_peca,y_peca):
 
     for linha_da_peca in range(len(Pe)):
         for coluna_da_peca in range(len(Pe[linha_da_peca])):
-            if Pe[linha_da_peca][coluna_da_peca] == 1:
+            if Pe[linha_da_peca][coluna_da_peca] == PECA_MOVEL:
 
                 coluna = coluna_da_peca + x_peca
                 linha = linha_da_peca + y_peca
                 
-                tabuleiro[linha][coluna] = 1
+                tabuleiro[linha][coluna] = PECA_MOVEL
 
 def colisao(Pe,x_peca,y_peca):
 
     for linha_da_peca in range(len(Pe)):
         for coluna_da_peca in range(len(Pe[linha_da_peca])):
-            if Pe[linha_da_peca][coluna_da_peca] == 1:
+            if Pe[linha_da_peca][coluna_da_peca] == PECA_MOVEL:
                 
                 coluna = coluna_da_peca + x_peca
                 linha = linha_da_peca + y_peca
 
-                if tabuleiro[linha+1][coluna] == 2 or tabuleiro[linha+1][coluna] == 4:
+                if tabuleiro[linha+1][coluna] == CHAO or tabuleiro[linha+1][coluna] == PECA_FIXA:
                     
                     return(False)
 
@@ -132,12 +150,11 @@ def decisao(y_peca):
 def fixar(tabuleiro):
 
     for i in range(len(tabuleiro)):
-
         for j in range(len(tabuleiro[i])):
 
-            if tabuleiro[i][j] == 1:
+            if tabuleiro[i][j] == PECA_MOVEL: 
 
-                tabuleiro[i][j] = 4
+                tabuleiro[i][j] = PECA_FIXA
 
 def randomiza_pecas(pecas):
     Pe = random.choice(pecas)
@@ -152,45 +169,50 @@ def girarPe(Pe):
 def mexer_peca_esquerda(Pe,x_peca,y_peca):
 
     for linha_da_peca in range(len(Pe)):
-            for coluna_da_peca in range(len(Pe[linha_da_peca])):
-                if Pe[linha_da_peca][coluna_da_peca] == 1:
+        for coluna_da_peca in range(len(Pe[linha_da_peca])):
+            if Pe[linha_da_peca][coluna_da_peca] == PECA_MOVEL:
 
-                    coluna = coluna_da_peca + x_peca
-                    linha = linha_da_peca + y_peca
+                coluna = coluna_da_peca + x_peca
+                linha = linha_da_peca + y_peca
 
-                    if tabuleiro[linha-1][coluna-1] == 2 or tabuleiro[linha-1][coluna-1] == 3 or tabuleiro[linha-1][coluna-1] == 4:
-                    
-                        return(+0)
+                if tabuleiro[linha-1][coluna-1] == CHAO \
+                    or tabuleiro[linha-1][coluna-1] == PAREDE \
+                        or tabuleiro[linha-1][coluna-1] == PECA_FIXA:
+                
+                    return(+0)
 
     return(-1)
 
 def mexer_peca_direita(Pe,x_peca,y_peca):
 
     for linha_da_peca in range(len(Pe)):
-            for coluna_da_peca in range(len(Pe[linha_da_peca])):
-                if Pe[linha_da_peca][coluna_da_peca] == 1:
+        for coluna_da_peca in range(len(Pe[linha_da_peca])):
+            if Pe[linha_da_peca][coluna_da_peca] == PECA_MOVEL:
 
-                    coluna = coluna_da_peca + x_peca
-                    linha = linha_da_peca + y_peca
+                coluna = coluna_da_peca + x_peca
+                linha = linha_da_peca + y_peca
 
-                    if tabuleiro[linha+1][coluna+1] == 2 or tabuleiro[linha+1][coluna+1] == 3 or tabuleiro[linha+1][coluna+1] == 4:
+                if tabuleiro[linha+1][coluna+1] == CHAO \
+                    or tabuleiro[linha+1][coluna+1] == PAREDE \
+                        or tabuleiro[linha+1][coluna+1] == PECA_FIXA:
                     
-                        return(+0)
+                    return(+0)
 
     return(+1)
 
 def mexer_peca_baixo(Pe,x_peca,y_peca):
 
     for linha_da_peca in range(len(Pe)):
-            for coluna_da_peca in range(len(Pe[linha_da_peca])):
-                if Pe[linha_da_peca][coluna_da_peca] == 1:
+        for coluna_da_peca in range(len(Pe[linha_da_peca])):
+            if Pe[linha_da_peca][coluna_da_peca] == PECA_MOVEL:
 
-                    coluna = coluna_da_peca + x_peca
-                    linha = linha_da_peca + y_peca
+                coluna = coluna_da_peca + x_peca
+                linha = linha_da_peca + y_peca
 
-                    if tabuleiro[linha+1][coluna] == 2 or tabuleiro[linha+1][coluna] == 3:
-                    
-                        return(+0)
+                if tabuleiro[linha+1][coluna] == CHAO \
+                    or tabuleiro[linha+1][coluna] == PECA_FIXA:
+                
+                    return(+0)
 
     return(+1)
 
@@ -252,8 +274,7 @@ while rodando:
 
     print(pontostotais)
 
-    if tabuleiro[0][4] == 4:
-        rodando = False
+    rodando(tabuleiro)
 
     time.sleep(0.4)
 
