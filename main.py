@@ -65,6 +65,7 @@ pontostotais = 0
 
 pode_descer = True
 
+velocidade = 0.5
 
 def rodando(tabuleiro):
 
@@ -142,7 +143,7 @@ def pontos(tabuleiro):
         if sum(tabuleiro[i][1:10]) == 9* PECA_FIXA:
             for j in range(1, 10):
                 tabuleiro[i][j] = VAZIO
-                
+
                 descer_peca(tabuleiro,i)
 
                 return(1)
@@ -230,6 +231,8 @@ while loop_jogo:
 
         fixar (tabuleiro)
 
+        velocidade *= 0.96
+
         x_peca = 4
         y_peca = 0
 
@@ -250,6 +253,8 @@ while loop_jogo:
 
     loop_jogo = rodando(tabuleiro)
 
-    time.sleep(0.4)
+    print(velocidade)
+
+    time.sleep(velocidade)
 
 print("FIM DO JOGO")
