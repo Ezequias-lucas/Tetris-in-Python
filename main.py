@@ -3,6 +3,11 @@ import os
 import time
 import keyboard
 import numpy 
+from audioplayer import AudioPlayer
+
+musica = AudioPlayer("Original Tetris theme (Tetris Soundtrack).mp3")
+musica.volume = 30
+musica.play(loop=True)
 
 #CONSTANTES DE ORGANIZAÇÂO E LEGIBILIDADE
 
